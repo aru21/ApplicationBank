@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AnkitApplication {
 
 	public static void main(String[] args) {
+		System.out.println("parosh");
 		SpringApplication.run(AnkitApplication.class, args);
 	}
 }
