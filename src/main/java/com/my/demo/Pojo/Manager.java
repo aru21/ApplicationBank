@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Table(name="manager")
 public class Manager {
 	@Id
+	@GeneratedValue
 	private Long managerid;
 	@OneToMany(mappedBy="manager")
 	private Set <Customer> customerList;

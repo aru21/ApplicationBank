@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Table(name="loantype")
 public class LoanType {
 	@Id
+	@GeneratedValue
 	private Long loantypeid;
 	@ManyToOne
 	@JoinColumn(name="branchid")

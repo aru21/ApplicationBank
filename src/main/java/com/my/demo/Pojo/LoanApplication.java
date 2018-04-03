@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Table(name="loanapplication")
 public class LoanApplication {
 	@Id
+	@GeneratedValue
 	private Long loanapplicationid;
 		
 	

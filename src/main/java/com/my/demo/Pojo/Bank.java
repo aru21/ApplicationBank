@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Table(name="Bank")
 public class Bank {
 	@Id
+	@GeneratedValue
 	private Long bankid;
 	@OneToMany(mappedBy="bank")
 	private Set<Branch> branchList;
