@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1"/>
+<title>Insert title here</title>
+</head>
+<body>
+    
+    <form th:object="${customer}" method="POST">
+  
+		  firstname
+		   <input type="text" th:field="*{firstname}" />
+			
+		   lastname
+		    <input type="text" th:field="*{lastname}" />
+		    	
+		    mobileno
+		    <input type="number" th:field="*{mobileno}" />
+		    	
+		    email
+		   <input type="tel" th:field="*{email}" />
+		   	
+		    password
+		    <input type="password" th:field="*{password}" />
+		    	
+		  address
+		   <input type="text" th:field="*{address}" />
+		   	
+		    birthdate
+		   <input type="text" th:field="*{birthdate}" />
+		   	
+		   gender
+		  	<input type="radio" th:field="*{gender}" th:text="male" th:value="Male" /> 
+           	
+		     
+		    <input type="submit" value="Submit" />
+		                 
+   </form>
+       
+</body>
+</html>
