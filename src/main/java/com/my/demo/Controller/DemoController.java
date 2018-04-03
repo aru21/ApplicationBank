@@ -1,16 +1,24 @@
 package com.my.demo.Controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.GsonBuilder;
+import com.my.demo.Dao.BranchDao;
 import com.my.demo.Dao.CustomerDao;
 import com.my.demo.Pojo.*;
+import com.my.demo.Repository.BankRepository;
 import com.my.demo.Service.CustomerService;
 
 @Controller
@@ -18,7 +26,14 @@ public class DemoController {
 	@Autowired
 	private CustomerService customerService;
 
+	@Autowired
+	private BankRepository BankRepository;
+	
+	@Autowired
 	private CustomerDao  customerDao;
+	
+	@Autowired
+	private BranchDao  branchDao;
 	
  	@RequestMapping("/")
 	public String index()
@@ -60,6 +75,9 @@ public class DemoController {
 			customer2 = customerService.CheckLogin(customer);
 			if(customer2 != null)
 			{
+				List<Bank> banks = new ArrayList<>();
+				banks = (List<Bank>) BankRepository.findAll();
+				model.addAttribute("listAllBank",banks);
 				model.addAttribute("customer", customer2);
 				return "customer/success";
 			}
@@ -69,4 +87,13 @@ public class DemoController {
 		
 	}
 	
+	@RequestMapping(value="loadAllBranch/{id}" , method= RequestMethod.GET)
+	@ResponseBody
+	public String loadState(@PathVariable("id") Long id)
+	{
+		System.out.println(id + "id by controller");
+		System.out.println(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create().toJson(branchDao.branchByBankId(id)));
+		return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create().toJson(branchDao.branchByBankId(id));
+		
+	}
 }

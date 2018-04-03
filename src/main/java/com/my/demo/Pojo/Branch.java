@@ -1,27 +1,39 @@
 package com.my.demo.Pojo;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
+
+import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name="branch")
 public class Branch {
 	@Id
 	@GeneratedValue
+	@Expose
 	private Long Branchid;
 	@ManyToOne
 	@JoinColumn(name="bankid")
 	private Bank bank;
 	@OneToMany(mappedBy="branch",fetch=FetchType.EAGER)
-	private Set<LoanType> loantypeList;
+	private  List<LoanType> loantypeList;
 	@OneToOne(mappedBy="branch")
 	private Manager manager;
 	
-	
+	@Expose
 	private String branchname;
+	@Expose
 	private String branchaddress;
+	@Expose
 	private String ifsccode;
+	
+	
+	
+	public Branch() {
+		super();
+	}
 	public Long getBranchid() {
 		return Branchid;
 	}
@@ -52,10 +64,10 @@ public class Branch {
 	public void setIfsccode(String ifsccode) {
 		this.ifsccode = ifsccode;
 	}
-	public Set<LoanType> getLoantype() {
+	public List<LoanType> getLoantype() {
 		return loantypeList;
 	}
-	public void setLoantype(Set<LoanType> loantype) {
+	public void setLoantype( List<LoanType> loantype) {
 		this.loantypeList = loantype;
 	}
 	public Manager getManager() {
@@ -67,6 +79,11 @@ public class Branch {
 	
 	public void addloantypeList(LoanType e) {
 		this.loantypeList.add(e);
+	}
+	@Override
+	public String toString() {
+		return "Branch [Branchid=" + Branchid + ", loantypeList=" + loantypeList + ", manager=" + manager
+				+ ", branchname=" + branchname + ", branchaddress=" + branchaddress + ", ifsccode=" + ifsccode + "]";
 	}
 
 

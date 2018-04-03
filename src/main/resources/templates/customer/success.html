@@ -3,9 +3,70 @@
 <head>
 <meta charset="ISO-8859-1" />
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+	 /*<![CDATA[*/
+		$(document).ready(function(){
+			
+			$('#listAllBank').on('change' , function(){
+				
+				var bankid = $('#listAllBank option:selected').val();
+				alert(bankid);
+				$.ajax({
+					
+					type:'GET',
+					contentType: "application/json",
+					url:'/loadAllBranch/' + bankid + '.html' ,
+					success:function(result){
+						
+						var result =  JSON.parse(result);
+						var s ='';
+						console.log(result.length);
+						
+						for(var i = 0 ; i< result.length ; i++ )
+							{
+							s +='<option value="'+ result[i].branchid +'">' + result[i].branchname +'</option>'
+							console.log("value of s" + s);
+							}
+						
+						$('#listAllBranch').html(s);
+					}
+				})
+				
+			});
+			
+		});
+		 /*]]>*/
+	
+	</script>
+	
+	<style>
+	
+		#listAllCountry{
+			width: 500px;
+		}
+		
+		#listAllCountry
+		{
+			width: 500px;
+		}
+	
+	</style>
 </head>
 <body>
+	<h2>Hello</h2>
 	<h1>Registration successful</h1>
 	<h1 th:text = '${customer.firstname}'></h1>
+
+	<select id="listAllBank" >
+             <option th:each="list : ${listAllBank}" th:value="${list.bankid}" th:text="${list.bankname}"></option>
+
+    </select>
+    <br/>
+    <select id="listAllBranch" >
+             <option th:each="list : ${s}" th:value="${list.branchid}" th:text="${list.branchname}"></option>
+
+    </select>  
+	
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.my.demo.Pojo;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -11,9 +12,18 @@ public class Bank {
 	@GeneratedValue
 	private Long bankid;
 	@OneToMany(mappedBy="bank")
-	private Set<Branch> branchList;
+	private List<Branch> branchList;
 	
 	private String bankname;
+
+	
+	
+	public Bank() {
+	}
+
+	public Bank(long id) {
+		this.bankid = id;
+	}
 
 	public Long getBankid() {
 		return bankid;
@@ -23,11 +33,11 @@ public class Bank {
 		this.bankid = bankid;
 	}
 
-	public Set<Branch> getBranch() {
+	public List<Branch> getBranch() {
 		return branchList;
 	}
 
-	public void setBranch(Set<Branch> branch) {
+	public void setBranch(List<Branch> branch) {
 		this.branchList = branch;
 	}
 
