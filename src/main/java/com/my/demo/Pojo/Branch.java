@@ -14,25 +14,33 @@ public class Branch {
 	@GeneratedValue
 	@Expose
 	private Long Branchid;
+	
 	@ManyToOne
 	@JoinColumn(name="bankid")
 	private Bank bank;
+	
 	@OneToMany(mappedBy="branch",fetch=FetchType.EAGER)
+	@Expose
 	private  List<LoanType> loantypeList;
+	
 	@OneToOne(mappedBy="branch")
 	private Manager manager;
 	
 	@Expose
 	private String branchname;
+	
 	@Expose
 	private String branchaddress;
+	
 	@Expose
 	private String ifsccode;
 	
-	
-	
 	public Branch() {
-		super();
+		
+	}
+	
+	public Branch(long id) {
+		this.Branchid = id;
 	}
 	public Long getBranchid() {
 		return Branchid;

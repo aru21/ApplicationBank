@@ -20,23 +20,63 @@
 					success:function(result){
 						
 						var result =  JSON.parse(result);
-						var s ='';
+						var s ='<option>' +"select Branch" +'</option>';
 						console.log(result.length);
-						
 						for(var i = 0 ; i< result.length ; i++ )
 							{
-							s +='<option value="'+ result[i].branchid +'">' + result[i].branchname +'</option>'
-							console.log("value of s" + s);
+							s +='<option  value="'+ result[i].Branchid +'" text="'+ result[i].branchname +'" >' + result[i].branchname +'</option>'
 							}
-						
+						console.log(s);
 						$('#listAllBranch').html(s);
 					}
 				})
 				
 			});
 			
+		
+			$('#listAllBranch').on('change' , function(){
+				var branchid = $('#listAllBranch option:selected').val();
+				alert(branchid);
+
+				$.ajax({
+					type:'GET',
+					contentType: "application/json",
+					url:'/loadAllLoanType/' + branchid + '.html' ,
+					success:function(result){
+						
+						var result =  JSON.parse(result);
+						var l ='<option>' +"select LoanType" +'</option>';
+						for(var i = 0 ; i< result.length ; i++ )
+							{
+						
+							l +='<option th:field=*{"'+ result[i].loantypeid +'"} value="'+ result[i].loantypeid +'">' + result[i].loantypename +'</option>'
+							
+							}
+						console.log("from listAllLoanType ");
+						console.log(l);
+						$('#listAllLoanType').html(l);
+					}
+				})
+				
+			});
+			
+			$('#listAllLoanType').on('change' , function(){
+				var loanType = $('#listAllLoanType option:selected').val();
+				alert(loanType);
+				alert("here");
+				$.ajax({
+					type:'GET',
+					contentType: "application/json",
+					url:'/test/' + loanType + '.html' ,
+					success:function(result){
+						$('#listAllLoanType').html(l);
+					}
+				})
+				
+			});
+			
 		});
-		 /*]]>*/
+	 /*]]>*/
 	
 	</script>
 	
@@ -57,16 +97,22 @@
 	<h2>Hello</h2>
 	<h1>Registration successful</h1>
 	<h1 th:text = '${customer.firstname}'></h1>
-
-	<select id="listAllBank" >
-             <option th:each="list : ${listAllBank}" th:value="${list.bankid}" th:text="${list.bankname}"></option>
-
-    </select>
-    <br/>
-    <select id="listAllBranch" >
-             <option th:each="list : ${s}" th:value="${list.branchid}" th:text="${list.branchname}"></option>
-
-    </select>  
+	<form th:action="@{/pro}" th:object="${loanApplication}" method="post">
+		<select id="listAllBank">
+		 <option>Select Bank</option>
+	             <option th:each="list : ${listAllBank}" th:value="${list.bankid}" th:text="${list.bankname}"></option>
 	
+	    </select>
+	    <br/>
+	    <select id="listAllBranch">	</select>  
+		<br/>
+		 <select id="listAllLoanType">	 </select> 
+		 
+		 <input type="text" th:field="*{loanamount}" />
+		 <input type="text" th:field="*{duration}" placeholder="In months" />
+		 
+		 <input type="submit" value="Submit" />
+		 
+	 </form>
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.my.demo.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.GsonBuilder;
 import com.my.demo.Dao.BranchDao;
 import com.my.demo.Dao.CustomerDao;
+import com.my.demo.Dao.LoanTypeDao;
 import com.my.demo.Pojo.*;
 import com.my.demo.Repository.BankRepository;
+import com.my.demo.Repository.LoanApplicationRepository;
 import com.my.demo.Service.CustomerService;
+import com.my.demo.Service.LoanApplicationService;
+import com.my.demo.Service.LoanTypeService;
 
 @Controller
 public class DemoController {
@@ -34,6 +39,19 @@ public class DemoController {
 	
 	@Autowired
 	private BranchDao  branchDao;
+	
+	@Autowired
+	private LoanTypeDao loanTypeDao;
+	
+	@Autowired
+	private LoanTypeService loanTypeService;
+	
+	@Autowired
+	private LoanApplicationRepository loanApplicationRepository;
+	
+	
+	@Autowired
+	private LoanApplicationService loanapplicationservice;
 	
  	@RequestMapping("/")
 	public String index()
@@ -66,7 +84,7 @@ public class DemoController {
 	}
 	
 	@RequestMapping(value = "/login" , method = RequestMethod.POST)
-	public String processLogin( Model model , Customer customer){
+	public String processLogin( Model model , Customer customer , HttpSession session){
 		System.out.println("***************************************************************");
 		System.out.println("inside login post");
 		System.out.println(customer);
@@ -79,6 +97,8 @@ public class DemoController {
 				banks = (List<Bank>) BankRepository.findAll();
 				model.addAttribute("listAllBank",banks);
 				model.addAttribute("customer", customer2);
+				model.addAttribute("loanApplication" , new LoanApplication());
+				session.setAttribute("sessionCustomer", customer2);
 				return "customer/success";
 			}
 		}
@@ -96,4 +116,44 @@ public class DemoController {
 		return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create().toJson(branchDao.branchByBankId(id));
 		
 	}
+	
+	
+	@RequestMapping(value="loadAllLoanType/{id}" , method= RequestMethod.GET)
+	@ResponseBody
+	public String loadAllLoanType(@PathVariable("id") Long id)
+	{
+		System.out.println(id + "id by controller");
+		System.out.println("///////////////////////////////////////////////////////////////////////////////");
+		System.out.println(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create().toJson(loanTypeDao.loanTypeByBranchId(id)));
+		return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create().toJson(loanTypeDao.loanTypeByBranchId(id));
+		
+	}
+	
+	@RequestMapping(value = "/pro"  , method = RequestMethod.POST)
+	public String afterSuccess(Model model , LoanApplication loanApplication ,HttpSession session){
+		Long id = (Long) session.getAttribute("loanType");
+		Customer customer = (Customer) session.getAttribute("sessionCustomer");
+		
+		LoanType loanType = loanTypeService.findOne(id);
+		loanApplication.setLoantype(loanType);
+		loanApplication.setCustomer(customer);
+		loanapplicationservice.save(loanApplication);
+		return "customer/pro";
+		
+	}
+	
+	
+	@RequestMapping(value="test/{id}" , method= RequestMethod.GET)
+	@ResponseBody
+	public void test(@PathVariable("id") Long id , HttpSession session)
+	{
+		
+		session.setAttribute("loanType", id);
+		System.out.println(id + "id by controller/*/*/*/*/*/*/*/*//*/*/*/*/*/*/*/*//*/*/*/*/**/***/");
+		
+		
+	}
+	
+	
+	
 }

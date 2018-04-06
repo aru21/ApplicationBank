@@ -4,12 +4,16 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 @Table(name="loantype")
 public class LoanType {
 	@Id
 	@GeneratedValue
+	@Expose
 	private Long loantypeid;
+	
 	@ManyToOne
 	@JoinColumn(name="branchid")
 	private Branch branch;
@@ -18,9 +22,13 @@ public class LoanType {
 	private Set <LoanApplication> loanapplication;
 	
 	
-	
+	@Expose
 	private String loantypename;
+	
+	@Expose
 	private Float intrestrate;
+	
+	
 	public Long getLoantypeid() {
 		return loantypeid;
 	}
@@ -50,6 +58,11 @@ public class LoanType {
 	}
 	public void setLoanapplication(Set<LoanApplication> loanapplication) {
 		this.loanapplication = loanapplication;
+	}
+	@Override
+	public String toString() {
+		return "LoanType [loantypeid=" + loantypeid + ", loanapplication=" + loanapplication + ", loantypename="
+				+ loantypename + ", intrestrate=" + intrestrate + "]";
 	}
 	
 	

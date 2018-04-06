@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.my.demo.Pojo.Customer;
+import com.my.demo.Pojo.LoanApplication;
 
 @Repository
 public class CustomerDao 

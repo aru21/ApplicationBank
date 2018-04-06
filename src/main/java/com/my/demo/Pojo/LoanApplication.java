@@ -1,14 +1,12 @@
 package com.my.demo.Pojo;
 
-import java.util.Set;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name="loanapplication")
 public class LoanApplication {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long loanapplicationid;
 		
 	
@@ -65,6 +63,11 @@ public class LoanApplication {
 	}
 	public void setLoantype(LoanType loantype) {
 		this.loantype = loantype;
+	}
+	@Override
+	public String toString() {
+		return "LoanApplication [loanapplicationid=" + loanapplicationid + ", loanamount=" + loanamount
+				+ ", annualincome=" + annualincome + ", duration=" + duration + "]";
 	}
 		
 	
