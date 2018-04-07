@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.GsonBuilder;
@@ -129,7 +130,7 @@ public class DemoController {
 		
 	}
 	
-	@RequestMapping(value = "/pro"  , method = RequestMethod.POST)
+	@RequestMapping(value = "/confirmLoan"  , method = RequestMethod.POST)
 	public String afterSuccess(Model model , LoanApplication loanApplication ,HttpSession session){
 		Long id = (Long) session.getAttribute("loanType");
 		Customer customer = (Customer) session.getAttribute("sessionCustomer");
@@ -137,8 +138,10 @@ public class DemoController {
 		LoanType loanType = loanTypeService.findOne(id);
 		loanApplication.setLoantype(loanType);
 		loanApplication.setCustomer(customer);
-		loanapplicationservice.save(loanApplication);
-		return "customer/pro";
+		//loanapplicationservice.save(loanApplication);
+		session.setAttribute("loanApplicationPojo", loanApplication);
+		model.addAttribute("confirmLoanObject", loanApplication);
+		return "customer/confirmLoan";
 		
 	}
 	
@@ -154,6 +157,23 @@ public class DemoController {
 		
 	}
 	
+	@RequestMapping(value = "/customerLoan"  , method = RequestMethod.POST)
+	public String customerLoan(Model model , LoanApplication loanApplication ,HttpSession session , @RequestParam String action ){
+		loanApplication = (LoanApplication) session.getAttribute("loanApplicationPojo");
+		model.addAttribute("customer",session.getAttribute("sessionCustomer"));
+		List<Bank> banks = (List<Bank>) BankRepository.findAll();
+		model.addAttribute("listAllBank" , banks);
+		model.addAttribute("loanApplication", loanApplication);
+		if(action.equals("Submit"))
+		{
+			
+			System.out.println("submit" + loanApplication);
+			loanapplicationservice.save(loanApplication);
+			return "customer/listAllAppliedLoan";
+		}
+		System.out.println("Cancel");
+		return "customer/success";
+	}
 	
 	
 }

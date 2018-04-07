@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1" />
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Confirmation</h1>
+		
+	<form th:action="@{/customerLoan}" th:object="${loanApplication}" method="post">
+		 
+		 <input type="text" th:field="*{loanamount}" disabled="disabled"/>
+		 <input type="text" th:field="*{duration}" placeholder="In months" disabled="disabled"/>
+		 
+		 <input type="submit" value="Submit" name="action" />
+		<input type="submit" value="Cancel" name="action" />
+	 </form>	
+	
+</body>
+</html>

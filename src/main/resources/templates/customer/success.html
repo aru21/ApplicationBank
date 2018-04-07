@@ -97,7 +97,7 @@
 	<h2>Hello</h2>
 	<h1>Registration successful</h1>
 	<h1 th:text = '${customer.firstname}'></h1>
-	<form th:action="@{/pro}" th:object="${loanApplication}" method="post">
+	<form th:action="@{/confirmLoan}" th:object="${loanApplication}" method="post">
 		<select id="listAllBank">
 		 <option>Select Bank</option>
 	             <option th:each="list : ${listAllBank}" th:value="${list.bankid}" th:text="${list.bankname}"></option>
